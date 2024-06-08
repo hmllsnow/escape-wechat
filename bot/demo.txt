@@ -1,0 +1,123 @@
+import { WechatyBuilder} from "wechaty"
+import qrcodeTerminal from 'qrcode-terminal'; 
+import { log } from 'wechaty'
+import { hotImport } from 'hot-import'
+import { config } from './config.js'
+//sconst wechaty = WechatyBuilder.build()
+
+
+const targetRoomNames = ['咱们仨', '群聊名称 2']; // 替换为实际的群聊名称
+const targetContactNames = ['LL', '联系人微信名 2']; // 替换为实际的联系人微信名
+const forwardToContactName = 'LL'; // 替换为要转发消息的联系人微信名
+
+async function onMessage(bot,message) {
+  if(message.text()=="ding"){
+    await message.say("dong");
+  }
+
+
+  const room = message.room();
+  const contact = message.talker();
+  
+
+  if(room){
+
+    const roomname= await room.topic();
+    const talkername = contact.name();
+    console.log(`roomtopic：[${roomname}]联系人name：${talkername}`);
+    if (targetRoomNames.includes(roomname) && targetContactNames.includes(talkername)) {
+      console.log(`条件正常`);
+      const forwardToContact = await bot.Contact.find({ name: config.king });
+      console.log(`联系人正常`);
+      console.log(`Received message: ${message.toString()}`); // 添加这行来打印原始消息
+      const text = message.text();
+      console.log(`Text extracted: ${text}`); 
+      if (forwardToContact) {
+        // 转发消息
+        switch (message.type()) {
+          case bot.Message.Type.Text:
+            // 文字消息
+            let text = message.text();
+            console.log(`文本[${text}]`);
+            text = text.replace(/:/g, "\\:");
+            await forwardToContact.say(`Message from ${talkername} in ${roomname}: "${text}"`);
+            switch (talkername){
+              case config.teacherChinese:
+                await forwardToContact.say(`尊贵的班主任说: "${text}"`);
+                break;
+              case config.teacherMaths:
+                await forwardToContact.say(`数学老师说: "${text}"`);
+                break;
+              case config.teacherEnglish:
+                await forwardToContact.say(`英语老师说: "${text}"`);
+                break;
+              default:
+                await forwardToContact.say(`暂时迷路的消息：[${talkername}]在[${roomname}]群里说: "${text}"`);
+                break;
+            }
+            
+            break;
+          case bot.Message.Type.Image:
+            // 图片消息
+            const image = await message.toFileBox();
+            await forwardToContact.say(`Image from ${talkername} in ${roomname}:`);
+            await forwardToContact.say(image);
+            break;
+          case bot.Message.Type.Audio:
+            // 语音消息
+            const audio = await message.toFileBox();
+            await forwardToContact.say(`Audio from ${talkername} in ${roomname}:`);
+            await forwardToContact.say(audio);
+            break;
+          case bot.Message.Type.Attachment:
+            // 文件消息
+            const attachment = await message.toFileBox();
+            await forwardToContact.say(`File from ${talkername} in ${roomname}:`);
+            await forwardToContact.say(attachment);
+            break;
+          // 其他类型消息处理...
+          default:
+            // 对于无法识别的消息类型，可能需要发送一条提示消息
+            await forwardToContact.say(`Received a message of unsupported type from ${talkername} in ${roomname}.`);
+            break;
+        }
+      } else {
+        console.error(`无法找到要转发消息的联系人：${forwardToContactName}`);
+      }
+    }
+  }
+  
+
+  
+}
+
+
+async function main () {
+    //const bot = WechatyBuilder.build()
+    const bot = WechatyBuilder.build({
+      puppetOptions: {
+        cache: true,
+      },
+      name:'hml',
+    });
+    log.level('verbose');
+    //const config = await hotImport('D:/demo/config.js');
+
+    
+
+    console.log('config.room='+config.room1);
+    //console.log("bot缓存状态");
+    //console.log(bot.puppet.options.cache);
+    bot
+      .on('scan', (qrcode, status) => {
+        console.log(`Scan QR Code to login: ${status}\nhttps://wechaty.js.org/qrcode/${encodeURIComponent(qrcode)}`);
+        qrcodeTerminal.generate(qrcode, { small: true });
+      })
+      .on('login',            user => console.log(`User ${user} logged in`))
+      //.on('message',       message => console.log(`Message: ${message}`))
+      .on('message',      async (message) => onMessage(bot, message))
+    await bot.start()
+  }
+  
+  main()
+    .catch(console.error)

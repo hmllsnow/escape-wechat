@@ -1,0 +1,24 @@
+{
+  "name": "demo",
+  "version": "1.0.0",
+  "description": "",
+  "main": "demo.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "hot-import": "^0.2.14",
+    "moment": "^2.30.1",
+    "node-fetch": "^3.3.2",
+    "openai": "^4.0.0",
+    "qrcode-terminal": "^0.12.0",
+    "wechat4u": "^0.7.14",
+    "wechaty": "^1.20.2",
+    "wechaty-puppet": "^1.21.1",
+    "wechaty-puppet-wechat": "^1.18.4",
+    "wechaty-puppet-wechat4u": "^1.14.14"
+  }
+}

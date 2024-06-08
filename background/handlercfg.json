@@ -1,0 +1,169 @@
+{
+    "personal": {
+        "reply": [
+            {
+                "whitelist": [
+                    "LL"
+                ],
+                "keywords": [
+                    "ding",
+                    "#操你",
+                    "#loha"
+                ],
+                "handler": "greet"
+            },
+            {
+                "whitelist": [
+                    "LLL"
+                ],
+                "keywords": "*",
+                "handler": "greet"
+            },
+            {
+                "whitelist": [
+                    "黄焖鸡"
+                ],
+                "keywords": [
+                    "你好"
+                ],
+                "handler": "greet"
+            }
+        ],
+        "forward": [
+            {
+                "whitelist": "*",
+                "keywords": [
+                    "forward"
+                ],
+                "targetContacts": [
+                    "LL",
+                    "黄焖鸡"
+                ],
+                "targetRooms": [
+                    "咱们仨"
+                ],
+                "handler": ""
+            },
+            {
+                "whitelist": "小鹏汽车-詹",
+                "keywords": "*",
+                "targetContacts": [
+                    "LL"
+                ],
+                "targetRooms": [],
+                "handler": ""
+            }
+        ],
+        "actions": [
+            {
+                "whitelist": [
+                    "aaa"
+                ],
+                "regex": "^#操你",
+                "action": "actionHandler"
+            }
+        ],
+        "nontext": [
+            {
+                "whitelist": [
+                    "LL"
+                ],
+                "targetContacts": [
+                    "黄焖鸡"
+                ],
+                "targetRooms": [
+                    "咱们仨"
+                ],
+                "handler": "nontextForwardHandler"
+            }
+        ]
+    },
+    "room": {
+        "reply": [
+            {
+                "whitelist": [
+                    "abc测试群",
+                    "咱们仨1"
+                ],
+                "talkers": "*",
+                "keywords": [
+                    "啊啊啊"
+                ],
+                "mentionMe": true,
+                "mentionAll": false,
+                "handler": "replyMeeting"
+            },
+            {
+                "whitelist": [
+                    "abc测试群",
+                    "咱们仨"
+                ],
+                "talkers": "*",
+                "keywords": [
+                    "+-*/"
+                ],
+                "mentionMe": true,
+                "mentionAll": false,
+                "handler": "replyOpenAI"
+            }
+        ],
+        "forward": [
+            {
+                "whitelist": "abc测试群",
+                "talkers": "*",
+                "targetContacts": [
+                    "LL"
+                ],
+                "targetRooms": [],
+                "keywords": "*",
+                "mentionMe": false,
+                "mentionAll": false,
+                "handler": ""
+            }
+        ],
+        "actions": [
+            {
+                "whitelist": "*",
+                "regex": "^#操你",
+                "action": "actionHandler"
+            },
+            {
+                "whitelist": "*",
+                "regex": "^#群成员",
+                "action": "actionRoomMembers"
+            },
+            {
+                "whitelist": "*",
+                "regex": "^#提醒群成员",
+                "action": "actionAtRoomMembers"
+            },
+            {
+                "whitelist": "*",
+                "regex": "^#退群",
+                "action": "actionQuitRoom"
+            }
+        ],
+        "nontext": [
+            {
+                "whitelist": [
+                    "咱们仨"
+                ],
+                "talkers": "*",
+                "targetContacts": [
+                    "LL",
+                    "黄焖鸡"
+                ],
+                "targetRooms": [],
+                "handler": "nontextForwardHandler"
+            }
+        ]
+    },
+    "handlersconfig": {
+        "nontextForwardHandler_config": {
+            "targetContacts": [
+                "LL"
+            ],
+            "targetRooms": []
+        }
+    }
+}
