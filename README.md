@@ -11,11 +11,11 @@ escape-wechat是一个微信助手，通过简单的可视化的配置，实现�
 一、使用docker安装
 docker安装是最简单，最快捷的方案
 1. 拉取镜像
-docker pull hmllsnow/escape-wechat:0.3
+docker pull hmllsnow/escape-wechat
 2. 运行容器
 ```shell
 docker run -d -p 3000:3000 -p 443:443 -p 8080:8080 -e OPENAI_BASE_URL='your_base_url' -e 
-OPENAI_API_KEY='your_api_key' -e OPENAI_MODEL='your_model' --name escape-wechat-container hmllsnow/escape-wechat:0.3
+OPENAI_API_KEY='your_api_key' -e OPENAI_MODEL='your_model' --name escape-wechat-container hmllsnow/escape-wechat
 ```
 > OPENAI_BASE_URL参数配置ai的base url<br/>
 OPENAI_API_KEY参数配置ai的api key <br>
@@ -23,7 +23,7 @@ OPENAI_MODEL参数配置ai的模型名称 <br>
 
 * 举例如果你使用廉价的deepseek模型： 
 ```shell
-docker run -d -p 3000:3000 -p 443:443 -p 8080:8080 -e OPENAI_BASE_URL='https://api.deepseek.com' -e OPENAI_API_KEY='sk-XXXXXXXXXXXXXXXXXXX' -e OPENAI_MODEL='deepseek-chat' --name escape-wechat-container hmllsnow/escape-wechat:0.3
+docker run -d -p 3000:3000 -p 443:443 -p 8080:8080 -e OPENAI_BASE_URL='https://api.deepseek.com' -e OPENAI_API_KEY='sk-XXXXXXXXXXXXXXXXXXX' -e OPENAI_MODEL='deepseek-chat' --name escape-wechat-container hmllsnow/escape-wechat
 ```
 
 ## 如何使用：
