@@ -34,15 +34,12 @@ process
   })
 
 
-
-
-
-
-
 const logDirectory = path.resolve(__dirname, './logs');
 
 console.log(logDirectory);
 const logFileName = 'app.log';
+const maxLogSize = 5 * 1024 * 1024; // 日志文件最大5MB
+const maxBackupFiles = 10;
 // 保存原始的 console.log 函数
 const originalConsoleLog = console.log;
 
@@ -52,46 +49,53 @@ if (!fs.existsSync(logDirectory)) {
 }
 
 // 创建一个可写流到日志文件
-const logStream = fs.createWriteStream(path.join(logDirectory, logFileName), { flags: 'a' });
+let logStream = fs.createWriteStream(path.join(logDirectory, logFileName), { flags: 'a' });
+
+// 检查日志文件大小，如果超过限制，则备份并创建新的日志文件
+function checkLogFileSize() {
+  const logFilePath = path.join(logDirectory, logFileName);
+  if (fs.existsSync(logFilePath)) {
+    const fileSize = fs.statSync(logFilePath).size;
+    if (fileSize > maxLogSize) {
+      const timestamp = moment().format('YYYYMMDDHHmmss');
+      const backupFileName = `appbak${timestamp}.log`;
+      const backupFilePath = path.join(logDirectory, backupFileName);
+      fs.renameSync(logFilePath, backupFilePath);
+      console.log(`日志文件已备份为 ${backupFileName}`);
+      cleanupBackupFiles();
+      // 关闭当前的写入流
+      logStream.end();
+      // 创建一个新的写入流到新的日志文件
+      logStream = fs.createWriteStream(logFilePath, { flags: 'a' });
+    }
+  }
+}
+
+// 清理多余的备份文件
+function cleanupBackupFiles() {
+  const backupFiles = fs.readdirSync(logDirectory).filter(file => file.startsWith('appbak'));
+  if (backupFiles.length > maxBackupFiles) {
+    backupFiles.sort((a, b) => fs.statSync(path.join(logDirectory, b)).mtime.getTime() - fs.statSync(path.join(logDirectory, a)).mtime.getTime());
+    const filesToDelete = backupFiles.slice(maxBackupFiles);
+    filesToDelete.forEach(file => {
+      const filePath = path.join(logDirectory, file);
+      fs.unlinkSync(filePath);
+      console.log(`已删除多余的备份文件 ${file}`);
+    });
+  }
+}
+
+
 
 // 重写 console.log 来同时输出到控制台和文件
 console.log = function (message) {
-
-
-const now = moment();
-const isoString = now.format('YYYY-MM-DDTHH:mm:ss');
+  const now = moment();
+  const isoString = now.format('YYYY-MM-DDTHH:mm:ss');
   logStream.write(`${isoString} - ${message}\n`);
   originalConsoleLog(message);
+  checkLogFileSize();//检查日志文件大小
 };
 
-
-
-
-/*
-
-
-async function onMessage(msg){
-    if(msg.text()=="ding"){
-        await msg.say("dong");
-    }
-    const text = msg.text();
-  const room = msg.room();
-  // 如果消息文本匹配你想要的指定群聊名称（替换成你的群聊名称）
- 
-  //&& await room.topic() === '咱们仨'
-  if (text === '#获取群成员' ) {
-    const members = await room.memberList();
-    let memberList = [];
-    for (let member of members) {
-      const alias = await room.alias(member) || member.name(); // 获取群内alias，如果没有alias，则用微信名
-      memberList.push(alias);
-    }
-    const namesString = memberList.join(', ');
-    console.log(`群成员列表: ${namesString}`);
-    await room.say(`群成员列表: ${namesString}`);
-  }
-}
-*/
 // 定义全局变量
 let bot;
 // 定义错误处理函数
@@ -105,142 +109,7 @@ async function onWechatyError(error) {
   //process.exit(1)
 }
 
-const targetRoomNames = ['咱们仨', '群聊名称 2']; // 替换为实际的群聊名称
-const targetContactNames = ['LL', '联系人微信名 2']; // 替换为实际的联系人微信名
-const forwardToContactName = 'LL'; // 替换为要转发消息的联系人微信名
 
-async function onMessage1(bot,message) {
-  console.log('进来了')
-  log.info('进来了')
-  let content = '';
-  const receiver = message.to()
-
-  const userSelfName = bot.currentUser?.name() || bot.userSelf()?.name()
-  content = message.text() 
-  const receiverName = receiver?.name()
-  console.log('hml----原始content=',content);
-  content = content.replace('@' + receiverName, '').replace('@' + userSelfName, '').replace(/@[^,，：:\s@]+/g, '').trim()
-  //console.log(`hml----content=${content}`);
-  console.log('hml----content=',content);
-  if(message.text()=="ding"){
-    console.error('进来了');
-    await message.say("dong");
-  }
-
-
-  const room = message.room();
-  const contact = message.talker();
-  
-
-  if(room){
-
-    const roomname= await room.topic();
-    const talkername = contact.name();
-    console.log(`roomtopic：[${roomname}]联系人name：${talkername}`);
-    if (targetRoomNames.includes(roomname) && targetContactNames.includes(talkername)) {
-      console.log(`条件正常`);
-      const forwardToContact = await bot.Contact.find({ name: config.king });
-      console.log(`联系人正常`);
-      console.log(`Received message: ${message.toString()}`); // 添加这行来打印原始消息
-      const text = message.text();
-      console.log(`Text extracted: ${text}`); 
-      if (forwardToContact) {
-        // 转发消息
-        switch (message.type()) {
-          case bot.Message.Type.Text:
-            // 文字消息
-            let text = message.text();
-            console.log(`文本[${text}]`);
-            //text = text.replace(/:/g, "\\:");
-
-            //await forwardToContact.say(`Message from ${talkername} in ${roomname}: "${text}"`);
-            switch (talkername){
-              case config.teacherChinese:
-                await forwardToContact.say(`尊贵的班主任说: "${text}"`);
-                break;
-              case config.teacherMaths:
-                await forwardToContact.say(`数学老师说: "${text}"`);
-                break;
-              case config.teacherEnglish:
-                await forwardToContact.say(`英语老师说: "${text}"`);
-                break;
-              default:
-                await forwardToContact.say(`暂时迷路的消息：[${talkername}]在[${roomname}]群里说: "${text}"`);
-                break;
-            }
-            
-            break;
-          case bot.Message.Type.Image:
-            // 图片消息
-            const image = await message.toFileBox();
-            await forwardToContact.say(`Image from ${talkername} in ${roomname}:`);
-            await forwardToContact.say(image);
-            switch (talkername){
-              case config.teacherChinese:
-                await forwardToContact.say(`尊贵的班主任发图了:`);
-                await forwardToContact.say(image);
-                break;
-              case config.teacherMaths:
-                await forwardToContact.say(`数学老师发图了:`);
-                await forwardToContact.say(image);
-                break;
-              case config.teacherEnglish:
-                await forwardToContact.say(`英语老师发图了:`);
-                await forwardToContact.say(image);
-                break;
-              default:
-                await forwardToContact.say(`暂时迷路的人发图了:`);
-                await forwardToContact.say(image);
-                break;
-            }
-
-
-            break;
-          case bot.Message.Type.Audio:
-            // 语音消息
-            const audio = await message.toFileBox();
-            await forwardToContact.say(`Audio from ${talkername} in ${roomname}:`);
-            await forwardToContact.say(audio);
-            break;
-          case bot.Message.Type.Attachment:
-            // 文件消息
-            const attachment = await message.toFileBox();
-
-            switch (talkername){
-              case config.teacherChinese:
-                await forwardToContact.say(`尊贵的班主任发文件了:`);
-                await forwardToContact.say(attachment);
-                break;
-              case config.teacherMaths:
-                await forwardToContact.say(`数学老师发文件了:`);
-                await forwardToContact.say(attachment);
-                break;
-              case config.teacherEnglish:
-                await forwardToContact.say(`英语老师发文件了:`);
-                await forwardToContact.say(attachment);
-                break;
-              default:
-                await forwardToContact.say(`暂时迷路的人发文件了:`);
-                await forwardToContact.say(attachment);
-                break;
-            }
-            break;
-          // 其他类型消息处理...
-          
-          default:
-            // 对于无法识别的消息类型，可能需要发送一条提示消息
-            await forwardToContact.say(`${talkername} 在[${roomname}]群里发了一条不能处理的消息请前往查看 .`);
-            break;
-        }
-      } else {
-        console.error(`无法找到要转发消息的联系人：${forwardToContactName}`);
-      }
-    }
-  }
-  
-
-  
-}
 
 
 // 通过 API 接口上传数据
