@@ -3,36 +3,78 @@ import qrcodeTerminal from 'qrcode-terminal';
 import { log } from 'wechaty'
 import { config } from './config.js'
 import { onMessage } from './handlers/onMessage.js'
-//import { greet, replyKeyword, provideHelp } from './handlers/bot_handlers.js'
 import { registerHandlers } from './handlers/bot_handlers.js';
 import * as handlers from './handlers/bot_handlers.js'; // 导入所有处理函数
 import fs  from 'fs';
 import path from 'path';
-import EventEmitter from 'events';
 import axios from 'axios';
+import os from 'os';
 // 获取当前模块的完整 URL
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
 import moment from 'moment';
 import { configParser } from './Utils.js';
+import IPCServer from './ipc/IPCServer.js';
+import { time } from 'console';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
+
+
+function cleanupSockFiles() {
+  let tempDir = '';
+  console.log('cleanupSockFiles-->进入sock清理函数');
+  // 判断运行环境
+  if (process.env.DOCKER_ENV === 'true') {
+    // 在 Docker 容器中运行
+    console.log('cleanupSockFiles-->目前运行环境是docker');
+    tempDir = '/tmp';
+  } else {
+    // 直接在操作系统上运行
+    tempDir = os.tmpdir();
+  }
+
+  try {
+    // 读取临时目录中的文件
+    const files = fs.readdirSync(tempDir);
+
+    // 过滤出 .sock 文件
+    const sockFiles = files.filter(file => path.extname(file) === '.sock');
+    if (sockFiles.length === 0) {
+      console.log('cleanupSockFiles-->没有找到 .sock 文件');
+    }
+    // 删除 .sock 文件
+    sockFiles.forEach(file => {
+      const filePath = path.join(tempDir, file);
+      fs.unlinkSync(filePath);
+      console.log('cleanupSockFiles-->已删除文件:', filePath);
+    });
+  } catch (err) {
+    console.error('cleanupSockFiles-->清理 .sock 文件时出错:', err);
+  }
+  console.log('cleanupSockFiles-->清理函数结束');
+}
+
+
+
 // 捕获全局异常
 process
   .on('uncaughtException', onWechatyError)
   .on('SIGTERM', () => {
     console.log('Received SIGTERM signal, closing child process...');
   // 执行必要的清理操作
-  // ...
+    console.log('接收到 SIGTERM 信号，正在清理 .sock 文件...');
+    cleanupSockFiles();
+    console.log('接收到 SIGTERM 信号，已完成清理 .sock 文件');
     process.exit(0);
   })
   .on('SIGINT', () => {
     console.log('Received SIGINT signal, closing child process...');
-  // 执行必要的清理操作
-  // ...
+    console.log('接收到 SIGINT 信号，正在清理 .sock 文件...');
+    cleanupSockFiles();
+    console.log('接收到 SIGINT 信号，已完成清理 .sock 文件');
     process.exit(0);
   })
-
+  //.on('exit', cleanupSockFiles);
 
 const logDirectory = path.resolve(__dirname, './logs');
 
@@ -88,11 +130,14 @@ function cleanupBackupFiles() {
 
 
 // 重写 console.log 来同时输出到控制台和文件
-console.log = function (message) {
+console.log = function (message,message2) {
   const now = moment();
   const isoString = now.format('YYYY-MM-DDTHH:mm:ss');
-  logStream.write(`${isoString} - ${message}\n`);
-  originalConsoleLog(message);
+  if(!message2){
+    message2=''
+  }
+  logStream.write(`${isoString} - ${message}${message2}\n`);
+  originalConsoleLog(message+message2);
   checkLogFileSize();//检查日志文件大小
 };
 
@@ -100,7 +145,7 @@ console.log = function (message) {
 let bot;
 // 定义错误处理函数
 async function onWechatyError(error) {
-  console.log('出错，但仍然可用:', error)
+  console.log('出错，但仍然可用:'+ error)
   // 这里可以尝试重启Wechaty或者执行其他恢复操作
   //await bot.logout()
   // 可以选择重新启动Wechaty
@@ -170,6 +215,7 @@ async function getConfig(){
 async function main (){
     //const bot = WechatyBuilder.build()
     //为解决1250的错误而加的
+    console.log('代码修改时间2024-06-19 12:15');
     process.env['WECHATY_LOG'] = 'error'
     let config = await getConfig();
     configParser(config);
@@ -216,6 +262,7 @@ async function main (){
             emit: 'login'
           };
           uploadLogin(data)
+          IPCServer(bot)
         })
       .on('message',      async (message) => {
         let msgTimestamp = Date.parse(message.date())

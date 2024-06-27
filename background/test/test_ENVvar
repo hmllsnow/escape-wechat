@@ -1,0 +1,3 @@
+console.log(process.env);
+const plainPassword = process.env.PASSWORD;
+console.log("env ",plainPassword)

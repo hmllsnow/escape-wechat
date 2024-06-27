@@ -4,9 +4,11 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const botrouter = require('./route/botRouter');
 const configrouter = require('./route/configRouter');
+const chatrouter = require('./route/chatRouter');
 const https = require('https');
 const fs = require('fs');
 const cors = require('cors');
+const errorHandler = require('../middleware/errorHandler');
 /**
  * 总的api框架
  * 需要处理什么功能请添加路由
@@ -32,7 +34,8 @@ class ApiService {
     this.app.use(bodyParser.json());
     this.app.use('/api/bot',botrouter)
     this.app.use('/api',configrouter)
-    
+    this.app.use('/api/chat',chatrouter)
+    this.app.use(errorHandler);
   }
 
   start() {

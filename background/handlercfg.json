@@ -27,6 +27,17 @@
                     "你好"
                 ],
                 "handler": "greet"
+            },
+            {
+                "mentionMe": false,
+                "mentionAll": false,
+                "whitelist": [
+                    "LL"
+                ],
+                "keywords": [
+                    "问"
+                ],
+                "handler": "replyOpenAI"
             }
         ],
         "forward": [

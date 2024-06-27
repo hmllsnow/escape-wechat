@@ -8,6 +8,7 @@ const qrcodeTerminal =require('qrcode-terminal')
 const botstatusHandler = require('../../handler/botstatusHandler');
 
 const botstatus = new botstatusHandler();
+const authMiddleware = require('../../middleware/auth');
 
 /**
  * @api {get} /api/bot/start 启动bot
@@ -16,7 +17,7 @@ const botstatus = new botstatusHandler();
  *
  * @apiSuccess {String} message 启动bot成功!
  */
-router.get('/start', (req, res) => {
+router.get('/start', authMiddleware,(req, res) => {
   wechatyBot.startBot()
   .then((data) => {
     console.log('Bot started with PID:', data.pid);
@@ -40,7 +41,7 @@ router.get('/start', (req, res) => {
   
 })
 
-router.get('/stop', (req, res) => {
+router.get('/stop' , authMiddleware, (req, res) => {
   if(!wechatyBot.botProcess){
     res.json({
       code: 500,
@@ -69,7 +70,7 @@ router.get('/stop', (req, res) => {
 
 })
 
-router.get('/restart', (req, res) => {
+router.get('/restart',authMiddleware, (req, res) => {
   if(!wechatyBot.botProcess){
     res.json({
       code: 500,
@@ -99,7 +100,7 @@ router.get('/restart', (req, res) => {
 
 })
 
-router.get('/status', (req, res) => {
+router.get('/status',authMiddleware,  (req, res) => {
   console.log('请求查询bot status=',botstatus.getStatus());
   res.json({
     code: 200,
@@ -108,7 +109,7 @@ router.get('/status', (req, res) => {
   });
 })
 
-router.get('/qrcode', (req, res) => {
+router.get('/qrcode',authMiddleware,  (req, res) => {
   console.log('请求查询bot qrcode=',botstatus.getQrcode());
   res.json({
     code: 200,
@@ -118,7 +119,7 @@ router.get('/qrcode', (req, res) => {
 })
 
 
-router.post('/qrcodeupload', (req, res) => {
+router.post('/qrcodeupload',  (req, res) => {
   console.log('qecodeupload=',req.body);
   qrcodeTerminal.generate(req.body.qrcode, { small: true });
   botstatus.setQrcode(req.body.qrcode);
@@ -130,7 +131,7 @@ router.post('/qrcodeupload', (req, res) => {
   });
 })
 
-router.post('/login', (req, res) => {
+router.post('/login',  (req, res) => {
   console.log('login=',req.body);
   botstatus.reciveLogin() 
   res.json({
@@ -140,7 +141,7 @@ router.post('/login', (req, res) => {
   });
 })
 //接受/logout状态
-router.post('/logout', (req, res) => {
+router.post('/logout',  (req, res) => {
   console.log('logout=',req.body);
   botstatus.reciveLogout()
   res.json({
@@ -149,5 +150,6 @@ router.post('/logout', (req, res) => {
     data: req.body
   });
 })
+
 
 module.exports = router;
