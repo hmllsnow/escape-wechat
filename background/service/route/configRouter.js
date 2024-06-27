@@ -12,7 +12,7 @@ const authMiddleware = require('../../middleware/auth');
  *
  * @apiSuccess {String} message 启动bot成功!
  */
-router.get('/config',authMiddleware,  (req, res) => {
+router.get('/config',  (req, res) => {
   
   res.json({
     code: 200,

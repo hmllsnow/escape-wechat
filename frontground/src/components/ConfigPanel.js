@@ -141,7 +141,8 @@ const ConfigPanel = () => {
           editingIndex={editingIndex}
         />
       </div>
-      <button onClick={saveConfig}>保存</button>
+      <br></br>
+      <button onClick={saveConfig}>保存配置</button>
     </div>
   );
 };
