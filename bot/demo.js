@@ -255,7 +255,7 @@ async function main (){
         };
         uploadData(data)
       })
-      .on('login',            user => 
+      .on('login',            async(user) => 
         {console.log(`User ${user} logged in`)
           const data = {
             user: user,
@@ -263,6 +263,7 @@ async function main (){
           };
           uploadLogin(data)
           IPCServer(bot)
+          const targetContact1 = await bot.Contact.find({ alias: alias });
         })
       .on('message',      async (message) => {
         let msgTimestamp = Date.parse(message.date())

@@ -20,7 +20,7 @@ docker安装是最简单，最快捷的方案
 docker pull hmllsnow/escape-wechat
 2. 运行容器
 ```shell
-docker run -d -p 3000:3000 -p 443:443 -p 8080:8080 -e OPENAI_BASE_URL='your_base_url' -e OPENAI_API_KEY='your_api_key' -e OPENAI_MODEL='your_model' -e API_KEY='your_apikey use fro sendmessage' -e LOGIN_PWD='your_login password use fro login control Panel' --name escape-wechat-container hmllsnow/escape-wechat:0.2
+docker run -d -p 3000:3000 -p 443:443 -p 8080:8080 -e OPENAI_BASE_URL='your_base_url' -e OPENAI_API_KEY="your_api_key" -e OPENAI_MODEL="your_model" -e API_KEY="your_apikey use fro sendmessage" -e LOGIN_PWD="your_login password use fro login control Panel" --name escape-wechat-container hmllsnow/escape-wechat:0.2
 ```
 > OPENAI_BASE_URL参数配置ai的base url<br/>
 OPENAI_API_KEY参数配置ai的api key <br>
@@ -30,7 +30,7 @@ LOGIN_PWD参数配置登录配置页面的密码 <br>
 
 * 举例如果你使用的deepseek模型（价格较低）： 
 ```shell
-docker run -d -p 3000:3000 -p 443:443 -p 8080:8080 -e OPENAI_BASE_URL='https://api.deepseek.com' -e OPENAI_API_KEY='sk-xxxxxxxxxxxxxxxxxxx' -e OPENAI_MODEL='deepseek-chat' -e API_KEY='123456789' -e LOGIN_PWD='password' --name escape-wechat-container hmllsnow/escape-wechat
+docker run -d -p 3000:3000 -p 443:443 -p 8080:8080 -e OPENAI_BASE_URL="https://api.deepseek.com" -e OPENAI_API_KEY="sk-xxxxxxxxxxxxxxxxx" -e OPENAI_MODEL="deepseek-chat" -e API_KEY="123456789" -e LOGIN_PWD="password" --name escape-wechat-container hmllsnow/escape-wechat
 ```
 
 ## 如何使用：
@@ -149,7 +149,7 @@ curl -k --location 'https://127.0.0.1/api/chat/contact' \
 }'
 ```
 ```shell
-curl -k --location 'https://127.0.0.1/api/chat/contact' \
+curl -k --location 'https://127.0.0.1/api/chat/room' \
 --header 'Content-Type: application/json' \
 --data '{
     "apiKey": "your apikey",
@@ -161,5 +161,15 @@ curl -k --location 'https://127.0.0.1/api/chat/contact' \
     
 }'
 ```
-
+windows cmd 请求示例（注意不是power shell）
+```command prompt
+curl -k -X POST "https://127.0.0.1/api/chat/contact" ^
+-H "Content-Type: application/json" ^
+-d "{\"apiKey\": \"your apikey\", \"name\": \"联系人\", \"alias\": \"\", \"message\": {\"type\": 1, \"content\": \"消息内容\"}}"
+```
+```command prompt
+curl -k -X POST "https://127.0.0.1/api/chat/room" ^
+-H "Content-Type: application/json" ^
+-d "{\"apiKey\": \"your apikey\", \"roomName\": \"群名\",\"message\": {\"type\": 1, \"content\": \"消息内容\"}}"
+```
 **加入 `-k` 参数忽略自签名证书，否则会报错。咱们的程序暂时使用的是自签名证书，所以需要忽略。**
