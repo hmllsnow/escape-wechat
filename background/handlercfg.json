@@ -53,7 +53,18 @@
                     "LL"
                 ],
                 "regex": "^#动作名",
-                "action": "actionHandler"
+                "handler": "actionHandler##{name:\"hml\",mm:\"123456789abc\"}"
+            },
+            {
+                "mentionMe": false,
+                "mentionAll": false,
+                "whitelist": [
+                    "LL"
+                ],
+                "keywords": [
+                    "给"
+                ],
+                "handler": "actionCozeTextChat##{apikey:\"pat_XucU5r07Hn9ZikNSTepnFHIE5QY61Tam1lk8JPzxou25SMF1HNR3DTGm9ibBPmzc\", bot_id:\"7389207993864634368\", user_id:\"123\" }"
             }
         ],
         "nontext": [
@@ -97,7 +108,7 @@
                 ],
                 "mentionMe": true,
                 "mentionAll": false,
-                "handler": "replyOpenAI"
+                "handler": "replyOpenAI##{     \"baseurl\":\"http://127.0.0.1:23333/v1\",     \"apikey\":\"\",     \"model\":\"internlm2\" }"
             }
         ],
         "forward": [
@@ -118,12 +129,12 @@
             {
                 "whitelist": "*",
                 "regex": "^#你好",
-                "action": "actionHandler"
+                "handler": "actionHandler##{test:\"test\"}"
             },
             {
                 "whitelist": "*",
                 "regex": "^#群成员",
-                "action": "actionRoomMembers"
+                "handler": "actionRoomMembers"
             }
         ],
         "nontext": [

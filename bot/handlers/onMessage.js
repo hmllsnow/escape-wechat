@@ -1,6 +1,6 @@
 // onMessage.js
 
-
+import { parseActionNameString } from '../Utils.js';
 
 /**
  * 检查消息是否满足指定的规则
@@ -118,7 +118,9 @@ async function handlePersonalMessage(message, bot, config) {
   * 但是每种类型的规则只会运行第一个符合条件的
   * 
   */
-
+  console.log('entry function handlePersonalMessage')
+  console.log(`${message.talker().name()}说:${message.text()}}`)
+  console.log(`${message.talker().alias()}`)
   // 遍历回复规则数组
   for (const rule of reply) {
     if (matchesRule(message, rule)) {
@@ -139,11 +141,11 @@ async function handlePersonalMessage(message, bot, config) {
   for (const rule of actions) {
     if (matchesRule(message, rule)) {
       console.log('config=', rule.handler);
-      await actionHandler(message, bot, rule.action);
+      await actionHandler(message, bot, rule.handler);
       break; // 找到匹配的规则后停止遍历
     }
   }
-
+  console.log('no match exit function handlePersonalMessage')
 
 }
 
@@ -228,8 +230,8 @@ async function handleRoomMessage(message, bot, config) {
     if(await matchesRuleWhilelistandTalkers(message,rule)){
       console.log(`群名和发消息人校验通过，进入 动作 规则处理`)
       if (matchesRule(message, rule)){
-        console.log('config=', rule.action);
-        await actionHandler(message, bot, rule.action);
+        console.log('config=', rule.handler);
+        await actionHandler(message, bot, rule.handler);
         break;
       }
     }
@@ -276,10 +278,11 @@ async function handleRoomNonTextMessage(message, bot, config) {
  * @param {Message} message 
  * @param {String} handlerName 
  */
-async function replyMessage(message, bot, handlerName) {
+async function replyMessage(message, bot, handlerString) {
+  const [handlerName, params] = parseActionNameString(handlerString)
   const handler = bot[handlerName];
   if (typeof handler === 'function') {
-    await handler(message,bot,handlerName);
+    await handler(message,bot,handlerName,params);
   } else {
     console.error(`Handler function ${handlerName} not found or not implemented.`);
   }
@@ -345,10 +348,12 @@ async function forwardMessage(message, bot, config) {
  * @param {Object} bot 
  * @param {String} actionName 
  */
-async function actionHandler(message, bot, actionName) {
+async function actionHandler(message, bot, actionString) {
+  
+  const [actionName, params] = parseActionNameString(actionString)
   const action = bot[actionName];
   if (typeof action === 'function') {
-    await action(bot,message);
+    await action(bot,message,params);
   } else {
     console.error(`Action function ${actionName} not found or not implemented.`);
   }

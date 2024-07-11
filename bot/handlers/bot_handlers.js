@@ -6,7 +6,7 @@ import removeMentions from '../Utils.js'
 import OpenAI from "openai";
 //从文件openai.json读取配置参数
 import openaiconfig from '../openai.json' assert { type: 'json' };
-
+import fetch from 'node-fetch';
 
 
 /**
@@ -184,7 +184,7 @@ export async function zhuanfa(message,bot) {
  */
 export async function actionHandler(bot,message) {
     console.log('这里是action方法actionHandler')
-    await message.say("操死你！！！！");
+    await message.say("空动作处理！！！！");
   }
 
 /**
@@ -389,6 +389,83 @@ export async function actionQuitRoom(bot,message) {
 
 
 
+export async function actionCozeTextChat(bot, message, params = {}) {
+  // 设置默认值
+  console.log('entry actionCozeTextChat')
+  const url = params.url || 'https://api.coze.cn/v3/chat';
+  const bot_id = params.bot_id;
+  const user_id = params.user_id || 'escapewechat';
+  const apikey = params.apikey;
+  // 检查必要参数
+  if (!bot_id) {
+    throw new Error('bot_id is required');
+  }
+  if (!apikey) {
+    throw new Error('apikey is required');
+  }
+  //构建content
+  let sendContent = "";
+  let content = "";
+  content = await removeMentions(message);
+  const talker = await message.talker();
+  if (message.room()) {
+    // 获取群聊实例
+    const room = await message.room();
+    sendContent = `${content}    --消息来自[${room}]群的[${talker}]`
+    
+  
+  }
+  else{
+    sendContent = `${content}    --消息来自好友[${talker}]`
+  }
+
+  // 构建请求体
+  const requestBody = {
+    bot_id: bot_id,
+    user_id: user_id,
+    stream: false,
+    auto_save_history: true,
+    additional_messages: [
+      {
+        role: "user",
+        content: sendContent,
+        content_type: "text"
+      }
+    ]
+  };
+
+  try {
+    // 发送请求
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${apikey}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(requestBody)
+    });
+
+    // 检查响应状态
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    // 解析并返回响应
+    const data = await response.json();
+    console.log('Response from Coze API:'+ data.toString());
+    return data;
+
+  } catch (error) {
+    console.error('Error calling Coze API:', error);
+    throw error;
+  }
+}
+
+
+
+
+
+
 
 
 /**
@@ -402,6 +479,9 @@ export function registerHandlers(bot, handlers) {
     });
 }
 // ... 其他自定义处理函数 ...
+
+
+
 
 
 

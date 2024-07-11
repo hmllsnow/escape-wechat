@@ -261,7 +261,7 @@ const ConfigSubSection = ({
               <th>Whitelist</th>
               {subSection !== 'nontext' && <th>Keywords</th>}
               {subSection !== 'nontext' && <th>Regex</th>}
-              <th>Handler/Action</th>
+              <th>Handler</th>
               {section === 'room' && <th>Talkers</th>}
         
               {section === 'room' && subSection !== 'nontext' && subSection !== 'actions' && <th>Mention Me</th>}
@@ -348,13 +348,13 @@ const ConfigSubSection = ({
                           {isEditing(index) ? (
                             <input
                               type="text"
-                              value={item.handler || item.action}
+                              value={item.handler || ''}
                               onChange={(e) =>
                                 onChange(section, subSection, index, 'handler', e.target.value)
                               }
                             />
                           ) : (
-                            item.handler || item.action
+                            item.handler || ''
                           )}
                         </td>
                         {section === 'room' && (

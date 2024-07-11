@@ -263,7 +263,7 @@ async function main (){
           };
           uploadLogin(data)
           IPCServer(bot)
-          const targetContact1 = await bot.Contact.find({ alias: alias });
+          //const targetContact1 = await bot.Contact.find({ alias: "别名" });
         })
       .on('message',      async (message) => {
         let msgTimestamp = Date.parse(message.date())
