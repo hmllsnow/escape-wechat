@@ -20,7 +20,7 @@ docker安装是最简单，最快捷的方案
 docker pull hmllsnow/escape-wechat
 2. 运行容器
 ```shell
-docker run -d -p 3000:3000 -p 443:443 -p 8080:8080 -e OPENAI_BASE_URL='your_base_url' -e OPENAI_API_KEY="your_api_key" -e OPENAI_MODEL="your_model" -e API_KEY="your_apikey use fro sendmessage" -e LOGIN_PWD="your_login password use fro login control Panel" --name escape-wechat-container hmllsnow/escape-wechat:0.2
+docker run -d  -p 443:443 -p 8080:8080 -e OPENAI_BASE_URL='your_base_url' -e OPENAI_API_KEY="your_api_key" -e OPENAI_MODEL="your_model" -e API_KEY="your_apikey use fro sendmessage" -e LOGIN_PWD="your_login password use fro login control Panel" --name escape-wechat-container hmllsnow/escape-wechat:0.2
 ```
 > OPENAI_BASE_URL参数配置ai的base url<br/>
 OPENAI_API_KEY参数配置ai的api key <br>
@@ -30,14 +30,14 @@ LOGIN_PWD参数配置登录配置页面的密码 <br>
 
 * 举例如果你使用的deepseek模型（价格较低）： 
 ```shell
-docker run -d -p 3000:3000 -p 443:443 -p 8080:8080 -e OPENAI_BASE_URL="https://api.deepseek.com" -e OPENAI_API_KEY="sk-xxxxxxxxxxxxxxxxx" -e OPENAI_MODEL="deepseek-chat" -e API_KEY="123456789" -e LOGIN_PWD="password" --name escape-wechat-container hmllsnow/escape-wechat
+docker run -d -p 443:443 -p 8080:8080 -e OPENAI_BASE_URL="https://api.deepseek.com" -e OPENAI_API_KEY="sk-xxxxxxxxxxxxxxxxx" -e OPENAI_MODEL="deepseek-chat" -e API_KEY="123456789" -e LOGIN_PWD="password" --name escape-wechat-container hmllsnow/escape-wechat
 ```
 
 ## 如何使用：
 ### 一、进入配置页面
 核心功能都在配置页面完成。根据你的安装方法，进入配置页面略有不同<br/>
 #### 1、docker安装
-如果使用docker镜像方式运行，配置页面：<u>[http://localhost:8080](http://localhost:8080)</u> <br/>
+如果使用docker镜像方式运行，配置页面：<u>[http://localhost](http://localhost)</u> <br/>
 #### 2、node直接运行
 不适用docker，且没有修改配置文件，配置页面：<u>[http://localhost:7788](http://localhost:7788)</u> <br/>
 ### 二、配置

@@ -14,7 +14,7 @@ const apiKeyValidator = (req, res, next) => {
   // 检查请求体中的API密钥是否与配置文件中的密钥匹配
   if (req.body.apiKey !== ApiConfig.apikey) {
     // 如果不匹配，返回401未授权的响应，并附带错误信息和空的数据部分
-    return res.status(401).json({
+    return res.json({
       code: 401,
       message: "apikey不正确",
       data: ''

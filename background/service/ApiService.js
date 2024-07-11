@@ -46,7 +46,9 @@ class ApiService {
     //在443端口启动https服务，使用app一样的路由
     https.createServer({
       key: fs.readFileSync(path.join(__dirname, '../cert/privatekey.pem')),
-      cert: fs.readFileSync(path.join(__dirname, '../cert/certificate.pem'))
+      cert: fs.readFileSync(path.join(__dirname, '../cert/certificate.pem')),
+      minVersion: 'TLSv1.2',
+      secureOptions: require('constants').SSL_OP_NO_SSLv3 | require('constants').SSL_OP_NO_TLSv1 | require('constants').SSL_OP_NO_TLSv1_1 // 禁用 SSLv3、TLSv1 和 TLSv1.1
     }, this.app).listen(443, () => {
       console.log('https服务已启动，监听端口443');
     });

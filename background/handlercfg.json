@@ -6,17 +6,8 @@
                     "LL"
                 ],
                 "keywords": [
-                    "ding",
-                    "#操你",
-                    "#loha"
+                    "ding"
                 ],
-                "handler": "greet"
-            },
-            {
-                "whitelist": [
-                    "LLL"
-                ],
-                "keywords": "*",
                 "handler": "greet"
             },
             {
@@ -54,23 +45,14 @@
                     "咱们仨"
                 ],
                 "handler": ""
-            },
-            {
-                "whitelist": "小鹏汽车-詹",
-                "keywords": "*",
-                "targetContacts": [
-                    "LL"
-                ],
-                "targetRooms": [],
-                "handler": ""
             }
         ],
         "actions": [
             {
                 "whitelist": [
-                    "aaa"
+                    "LL"
                 ],
-                "regex": "^#操你",
+                "regex": "^#动作名",
                 "action": "actionHandler"
             }
         ],
@@ -94,11 +76,11 @@
             {
                 "whitelist": [
                     "abc测试群",
-                    "咱们仨1"
+                    "咱们仨"
                 ],
                 "talkers": "*",
                 "keywords": [
-                    "啊啊啊"
+                    "keyword"
                 ],
                 "mentionMe": true,
                 "mentionAll": false,
@@ -135,29 +117,20 @@
         "actions": [
             {
                 "whitelist": "*",
-                "regex": "^#操你",
+                "regex": "^#你好",
                 "action": "actionHandler"
             },
             {
                 "whitelist": "*",
                 "regex": "^#群成员",
                 "action": "actionRoomMembers"
-            },
-            {
-                "whitelist": "*",
-                "regex": "^#提醒群成员",
-                "action": "actionAtRoomMembers"
-            },
-            {
-                "whitelist": "*",
-                "regex": "^#退群",
-                "action": "actionQuitRoom"
             }
         ],
         "nontext": [
             {
                 "whitelist": [
-                    "咱们仨"
+                    "咱们仨",
+                    "abc测试群"
                 ],
                 "talkers": "*",
                 "targetContacts": [

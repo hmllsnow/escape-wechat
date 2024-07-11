@@ -58,7 +58,7 @@ COPY nginx.conf /etc/nginx/http.d/default.conf
 RUN apk add --no-cache jq
 
 # 暴露端口
-EXPOSE 3000 443 8080
+EXPOSE 443 8080
 
 # 启动脚本
 CMD ["sh", "-c", "jq --arg baseurl \"${OPENAI_BASE_URL:-$(jq -r '.baseurl' /usr/src/app/bot/openai.json)}\" \
