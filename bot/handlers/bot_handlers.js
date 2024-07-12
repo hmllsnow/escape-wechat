@@ -79,8 +79,19 @@ export async function replyCoze(message,bot) {
  * 在群里被@ 后，去问openAI的api接口（任何openAI格式的api都支持）
  * @param {Message} message - 收到的消息对象
  */
-export async function replyOpenAI(message,bot) {
+export async function replyOpenAI(message,bot,handlerName,params = {}) {
   // 确保message是从群里来的
+  console.log('replayOpenAI----进入replyOpenAI handername='+handlerName);
+  console.log('replayOpenAI----进入replyOpenAI handername='+JSON.stringify(params));
+  let apiconfig = {};
+  apiconfig = openaiconfig
+    if(params!={}){
+      apiconfig = params;
+      console.log('replayOpenAI----使用params进行配置');
+    }
+    
+    console.log('replayOpenAI----openai配置='+JSON.stringify(apiconfig));
+
   if (message.room()) {
     // 获取群聊实例
     const room = await message.room();
@@ -91,30 +102,29 @@ export async function replyOpenAI(message,bot) {
     const receiverName = receiver?.name()
     
 
-
     console.log('replayOpenAI----原始content='+content);
     //content = content.replace('@' + receiverName, '').replace('@' + userSelfName, '').replace(/@[^,，：:\s@]+/g, '').trim()
     //console.log(`hml----content=${content}`);
     content = await removeMentions(message);
     console.log('replayOpenAI----处理后的content='+content);
     try{
-      console.log('openai config='+openaiconfig);
+      console.log('openai config='+JSON.stringify(apiconfig));
 
       
       const openai = new OpenAI({
-        apiKey: `${openaiconfig.apikey}`,
-        baseURL: `${openaiconfig.baseurl}` ,
+        apiKey: `${apiconfig.apikey}`,
+        baseURL: `${apiconfig.baseurl}` ,
       });
       const completion = await openai.chat.completions.create({
         messages: [{role: "user", content: `${content}` }],
         //{ role: "system", content: "You are a helpful assistant." },{role: "user", content: "请做个自我介绍." }
-        model: `${openaiconfig.model}`,
+        model: `${apiconfig.model}`,
       });
     
       console.log(completion.choices[0]);
       const reply = completion.choices[0].message.content;
 
-      await room.say(`${reply}\n  from internlm2`,talker);
+      await room.say(`${reply}\n  from ${apiconfig.model}`,talker);
     }catch(e){
       console.log('openai error',e);
       await room.say(`调用api出错了，请稍后再试吧\n${e.toString()}`,talker);
@@ -134,21 +144,21 @@ export async function replyOpenAI(message,bot) {
     content = await removeMentions(message);
     console.log('replayOpenAI----处理后的content='+content);
     try{
-      console.log('openai config='+openaiconfig);
+      console.log('openai config='+JSON.stringify(apiconfig));
       const openai = new OpenAI({
-        apiKey: `${openaiconfig.apikey}`,
-        baseURL: `${openaiconfig.baseurl}` ,
+        apiKey: `${apiconfig.apikey}`,
+        baseURL: `${apiconfig.baseurl}` ,
       });
       const completion = await openai.chat.completions.create({
         messages: [{role: "user", content: `${content}` }],
         //{ role: "system", content: "You are a helpful assistant." },{role: "user", content: "请做个自我介绍." }
-        model: `${openaiconfig.model}`,
+        model: `${apiconfig.model}`,
       });
     
       console.log(completion.choices[0]);
       const reply = completion.choices[0].message.content;
 
-      await message.say(`${reply}\n  from LLM`,talker);
+      await message.say(`${reply}\n  from ${apiconfig.model}`,talker);
     }catch(e){
       console.log('openai error'+e.toString());
       await message.say(`调用api出错了，请稍后再试吧\n${e.toString()}`,talker);

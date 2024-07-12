@@ -95,13 +95,23 @@ export function parseActionNameString(input) {
   // 如果没有参数字符串，直接返回操作处理器名称和空对象
   // 如果没有参数部分，返回动作处理器名称和空对象
   if (!paramsString) {
+    console.log("parseActionNameString no paramsString:"+actionHandler)
     return [actionHandler, {}];
   }
-
+  console.log("parseActionNameString paramsString:"+paramsString)
   try {
     // 尝试将参数字符串解析为JSON对象，替换冒号前的单词为JSON字符串的关键字
     // 这是为了处理JSON解析要求关键字必须用引号括起来的问题
-    const paramsObject = JSON.parse(paramsString.replace(/(\w+):/g, '"$1":'));
+    let paramsObject;
+    try {
+      paramsObject = JSON.parse(paramsString);
+    } catch (e) {
+      // 如果直接解析失败，尝试修复格式
+      const fixedString = paramsString.replace(/(\s*?{\s*?|\s*?,\s*?)(['"])?([a-zA-Z0-9_]+)(['"])?:/g, '$1"$3":');
+
+      console.log("Fixed string:", fixedString);
+      paramsObject = JSON.parse(fixedString);
+    }
     return [actionHandler, paramsObject];
   } catch (error) {
     // 如果解析失败，打印错误信息，并返回操作处理器名称和空对象
