@@ -20,18 +20,12 @@ docker安装是最简单，最快捷的方案
 docker pull hmllsnow/escape-wechat
 2. 运行容器
 ```shell
-docker run -d  -p 443:443 -p 8080:8080 -e OPENAI_BASE_URL='your_base_url' -e OPENAI_API_KEY="your_api_key" -e OPENAI_MODEL="your_model" -e API_KEY="your_apikey use fro sendmessage" -e LOGIN_PWD="your_login password use fro login control Panel" --name escape-wechat-container hmllsnow/escape-wechat
+docker run -d  -p 443:443 -p 8080:8080 -e LOGIN_PWD="your_login password use fro login control Panel" --name escape-wechat-container hmllsnow/escape-wechat
 ```
-> OPENAI_BASE_URL参数配置ai的base url<br/>
-OPENAI_API_KEY参数配置ai的api key <br>
-OPENAI_MODEL参数配置ai的模型名称 <br>
-API_KEY参数配置使用api接口发送消息时的apikey <br>
+> API_KEY参数配置使用api接口发送消息时的apikey <br>
 LOGIN_PWD参数配置登录配置页面的密码 <br>
 
-* 举例如果你使用的deepseek模型（价格较低）： 
-```shell
-docker run -d -p 443:443 -p 8080:8080 -e OPENAI_BASE_URL="https://api.deepseek.com" -e OPENAI_API_KEY="sk-xxxxxxxxxxxxxxxxx" -e OPENAI_MODEL="deepseek-chat" -e API_KEY="123456789" -e LOGIN_PWD="password" --name escape-wechat-container hmllsnow/escape-wechat
-```
+
 
 ## 如何使用：
 ### 一、进入配置页面
@@ -59,8 +53,12 @@ keyword、regex 兩個條件可以同時存在，但必須同時符合，才会�
 **回复函数实现了调用函数传参的功能，函数名和参数之间通过\#\#分隔，参数使用json格式**<br/>
 **举例：**<br/>
 ```shell
-actionCozeTextChat##{apikey:\"pat_************************c\", bot_id:\"12345678901234564\", user_id:\"123\" }
+replyOpenAI##{baseurl:"https://api.deepseek.com",apikey:"sk-**************",model:"deepseek-chat" }
 ```
+--说明：1、baseurl：大模型api地址，2、apikey：大模型api key，3、model：大模型模型名称<br/>
+举例使用的deepseek模型（原因：接口格式与openai一致且价格较低）
+<img src="./docs/images/image-6.png" alt="" width="800"/>
+
 ###### 1.2、转发配置
 收到白名单（*表示任何人）用户发送的文本消息，如何文本消息包含Keyword关键字（或文本消息符合Regex配置的正则表达）则转发到指定的群Target Rooms或联系人Target Contacts。
 ###### 1.3、动作配置
@@ -70,6 +68,7 @@ actionCozeTextChat##{apikey:\"pat_************************c\", bot_id:\"12345678
 ```shell
 actionCozeTextChat##{apikey:\"pat_************************c\", bot_id:\"12345678901234564\", user_id:\"123\" }
 ```
+<img src="./docs/images/image-5.png" alt="" width="800"/>
 ###### 1.4、非文本消息处理配置
 由于非文本消息目前不能处理，所以非文本消息一般执行转发规则。收到白名单人员发送的消息，直接转发给指定群或指定群。
 ##### 2、群消息

@@ -28,7 +28,7 @@
                 "keywords": [
                     "问"
                 ],
-                "handler": "replyOpenAI"
+                "handler": "replyOpenAI##{     baseurl:\"https://api.deepseek.com\",     apikey:\"sk-ac2a5d258cb84fdba7b7e60e63eea6b9\",     model:\"deepseek-chat\" }"
             }
         ],
         "forward": [
