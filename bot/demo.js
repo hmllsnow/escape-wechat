@@ -215,7 +215,7 @@ async function getConfig(){
 async function main (){
     //const bot = WechatyBuilder.build()
     //为解决1250的错误而加的
-    console.log('代码修改时间2024-06-19 12:15');
+    console.log('代码修改时间2024-07-11 23:07');
     process.env['WECHATY_LOG'] = 'error'
     let config = await getConfig();
     configParser(config);

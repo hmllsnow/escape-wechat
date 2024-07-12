@@ -20,7 +20,7 @@ docker安装是最简单，最快捷的方案
 docker pull hmllsnow/escape-wechat
 2. 运行容器
 ```shell
-docker run -d  -p 443:443 -p 8080:8080 -e OPENAI_BASE_URL='your_base_url' -e OPENAI_API_KEY="your_api_key" -e OPENAI_MODEL="your_model" -e API_KEY="your_apikey use fro sendmessage" -e LOGIN_PWD="your_login password use fro login control Panel" --name escape-wechat-container hmllsnow/escape-wechat:0.2
+docker run -d  -p 443:443 -p 8080:8080 -e OPENAI_BASE_URL='your_base_url' -e OPENAI_API_KEY="your_api_key" -e OPENAI_MODEL="your_model" -e API_KEY="your_apikey use fro sendmessage" -e LOGIN_PWD="your_login password use fro login control Panel" --name escape-wechat-container hmllsnow/escape-wechat
 ```
 > OPENAI_BASE_URL参数配置ai的base url<br/>
 OPENAI_API_KEY参数配置ai的api key <br>
@@ -55,16 +55,29 @@ docker run -d -p 443:443 -p 8080:8080 -e OPENAI_BASE_URL="https://api.deepseek.c
 ##### 1、个人消息
 ###### 1.1、回复配置
 收到白名单（*表示任何人）用户发送的文本消息，如何文本消息包含Keyword关键字（或文本消息符合Regex配置的正则表达）则执行Handler配置的回复函数。默认已经开发了greet函数，会回复dang
-keyword、regex 兩個條件可以同時存在，但必須同時符合，才会触发，所以這樣做意義不大，所以建議這兩個條件互斥存在。
+keyword、regex 兩個條件可以同時存在，但必須同時符合，才会触发，所以這樣做意義不大，所以建議這兩個條件互斥存在。<br/>
+**回复函数实现了调用函数传参的功能，函数名和参数之间通过\#\#分隔，参数使用json格式**<br/>
+**举例：**<br/>
+```shell
+actionCozeTextChat##{apikey:\"pat_************************c\", bot_id:\"12345678901234564\", user_id:\"123\" }
+```
 ###### 1.2、转发配置
 收到白名单（*表示任何人）用户发送的文本消息，如何文本消息包含Keyword关键字（或文本消息符合Regex配置的正则表达）则转发到指定的群Target Rooms或联系人Target Contacts。
 ###### 1.3、动作配置
-收到白名单（*表示任何人）用户发送的文本消息，如何文本消息包含Keyword关键字（或文本消息符合Regex配置的正则表达）则执行Handler配置的函数内写好的动作。
+收到白名单（*表示任何人）用户发送的文本消息，如何文本消息包含Keyword关键字（或文本消息符合Regex配置的正则表达）则执行Handler配置的函数内写好的动作。<br/>
+**回复函数实现了调用函数传参的功能，函数名和参数之间通过\#\#分隔，参数使用json格式**<br/>
+**举例：**<br/>
+```shell
+actionCozeTextChat##{apikey:\"pat_************************c\", bot_id:\"12345678901234564\", user_id:\"123\" }
+```
 ###### 1.4、非文本消息处理配置
 由于非文本消息目前不能处理，所以非文本消息一般执行转发规则。收到白名单人员发送的消息，直接转发给指定群或指定群。
 ##### 2、群消息
 回复，转发、动作与个人消息规则类似，增加了说话人（就是消息的发送人），增加了@自己和@所有人两个选项。
 规则说明：当群白名单，说话人满足后。执行后续规则————。所以如果想要仅在被@时触发，就要配置一个永远无法满足的keyword做为条件。
+
+
+
 
 #### 3、举例
 ##### 1、转发

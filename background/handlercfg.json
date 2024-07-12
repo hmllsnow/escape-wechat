@@ -53,7 +53,7 @@
                     "LL"
                 ],
                 "regex": "^#动作名",
-                "handler": "actionHandler##{name:\"hml\",mm:\"123456789abc\"}"
+                "handler": "actionHandler"
             },
             {
                 "mentionMe": false,
