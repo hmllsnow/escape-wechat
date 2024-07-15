@@ -11,9 +11,9 @@
 function parseActionNameString(input) {
   // 使用'##'分割输入字符串，得到操作处理器名称和参数字符串
   // 使用 '##' 分割输入字符串
-  const [actionHandler, ...rest] = input.split('##');//兼容字符串中出现多个##的情况
+  const [actionHandlerOri, ...rest] = input.split('##');//兼容字符串中出现多个##的情况
   const paramsString = rest.join('##');
-
+  const actionHandler=actionHandlerOri.replace(/\n/g, '')
   // 如果没有参数字符串，直接返回操作处理器名称和空对象
   // 如果没有参数部分，返回动作处理器名称和空对象
   if (!paramsString) {
@@ -43,7 +43,7 @@ function parseActionNameString(input) {
 }
 
 // 使用示例
-const input = "replyOpenAI##{baseurl:\"https://api.deepseek.com\",apikey:\"sk-ac2a5d258cb84fdba7b7e60e63eea6b9\",model:\"deepseek-chat\" }";
+const input = "replyOpenAI\n##\n{\nbaseurl:\"https://api.deepseek.com\",\napikey:\"sk-******************\",\nmodel:\"deepseek-chat\"\n}";
 const [action, params] = parseActionNameString(input);
 
 console.log("Action:", action);
@@ -51,7 +51,7 @@ console.log("Parameters:", params);
 
 // 示例：如何将参数传递给另一个函数
 function anotherFunction(params) {
-  console.log("Received parameters:", params.name);
+  console.log("Received parameters:", params.apikey);
 }
 
 anotherFunction(params);

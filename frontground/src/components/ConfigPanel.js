@@ -344,17 +344,20 @@ const ConfigSubSection = ({
                             )}
                           </td>
                         )}
-                        <td>
+                        <td className="handler-cell">
                           {isEditing(index) ? (
-                            <input
-                              type="text"
+                            <textarea
                               value={item.handler || ''}
                               onChange={(e) =>
                                 onChange(section, subSection, index, 'handler', e.target.value)
                               }
+                              rows={5}
+                              className="handler-textarea"
                             />
                           ) : (
-                            item.handler || ''
+                            <pre className="handler-display">
+                              {item.handler || ''}
+                            </pre>
                           )}
                         </td>
                         {section === 'room' && (

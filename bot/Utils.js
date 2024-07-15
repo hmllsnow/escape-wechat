@@ -90,8 +90,9 @@ export function parseActionNameString(input) {
   // 使用'##'分割输入字符串，得到操作处理器名称和参数字符串
   // 使用 '##' 分割输入字符串
   console.log("parseActionNameString:"+input)
-  const [actionHandler, ...rest] = input.split('##');//兼容字符串中出现多个##的情况
+  const [actionHandlerOri, ...rest] = input.split('##');//兼容字符串中出现多个##的情况
   const paramsString = rest.join('##');
+  const actionHandler=actionHandlerOri.replace(/\n/g, '')
   // 如果没有参数字符串，直接返回操作处理器名称和空对象
   // 如果没有参数部分，返回动作处理器名称和空对象
   if (!paramsString) {

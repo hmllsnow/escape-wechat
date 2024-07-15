@@ -24,3 +24,21 @@ table {
   button {
     margin-right: 5px;
   }
+
+  .handler-cell {
+    min-width: 200px;
+  }
+  
+  .handler-textarea {
+    width: 100%;
+    min-height: 60px;
+    resize: vertical;
+  }
+  
+  .handler-display {
+    white-space: pre-wrap;
+    word-break: break-word;
+    margin: 0;
+    max-height: 100px;
+    overflow: auto;
+  }
