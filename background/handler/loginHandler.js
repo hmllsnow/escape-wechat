@@ -14,5 +14,5 @@ if (plainPassword) {
 
 module.exports = {
   hashedPassword: hashedPassword,
-  jwtSecret: process.env.JWT_SECRET || 'defaultJWTSecret',
+  jwtSecret: process.env.JWT_SECRET || hashedPassword,
 };
