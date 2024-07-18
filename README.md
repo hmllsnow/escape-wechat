@@ -25,6 +25,32 @@ docker run -d -p 443:443 -p 8080:8080  -e API_KEY="your api key" -e LOGIN_PWD="y
 > API_KEY参数配置使用api接口发送消息时的apikey <br>
 LOGIN_PWD参数配置登录配置页面的密码 <br>
 
+## 如何升级：
+### 为什么升级：
+功能还在不停完善，bug也在不停修复，所以升级技巧也是需要的。
+### docker版升级原理：
+删除原docker镜像，拉取新版镜像
+### 升级好处：
+实行新功能
+### 升级坏处：
+原配置都丢了，所以请把你的配置都备份好（目前我能给你的备份方法就是，复制粘贴进写字版，安装好新版后再配置一遍）
+
+### 好了，现在可以告诉你指令了：
+>
+1、强制把容器干掉
+```shell
+docker rm -f escape-wechat-container
+```
+2、删除镜像
+```shell
+docker rmi hmllsnow/escape-wechat
+```
+3、拉取、运行新的容器
+```shell
+docker run -d -p 443:443 -p 8080:8080  -e API_KEY="your api key" -e LOGIN_PWD="your_login password use fro login control Panel" --name escape-wechat-container hmllsnow/escape-wechat
+```
+4、登陆配置页面，重新配置，并登陆机器人
+
 
 
 ## 如何使用：
@@ -42,7 +68,7 @@ LOGIN_PWD参数配置登录配置页面的密码 <br>
 首先是：启动，停止，重启按钮
 启动：启动微信机器人，如果已经启动，则不会重复启动。
 停止：停止微信机器人，如果已经停止，则不会重复停止。
-重启：重启微信机器人
+重启：重启微信机器人（修改配置后请重启生效）
 
 #### 2、配置面板
 大类分为个人和群，分别对应个人微信消息、群消息的配置
