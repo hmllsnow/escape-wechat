@@ -13,6 +13,10 @@ escape-wechat是一个微信助手，通过简单的可视化的配置，实现�
 本项目基于wechaty项目，感谢wechaty项目组提供的开源项目。<br>
 <u>https://github.com/wechaty/wechaty</u>
 
+<iframe src="//player.bilibili.com/player.html?isOutside=true&aid=112716098308200&bvid=BV1rChKedEEU&cid=500001602671511&p=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"></iframe>
+
+<br/>
+
 ## 如何安装：
 一、使用docker安装
 docker安装是最简单，最快捷的方案
