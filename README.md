@@ -24,10 +24,36 @@ docker安装是最简单，最快捷的方案
 docker pull hmllsnow/escape-wechat
 2. 运行容器
 ```shell
-docker run -d  -p 443:443 -p 8080:8080 -e LOGIN_PWD="your_login password use fro login control Panel" --name escape-wechat-container hmllsnow/escape-wechat
+docker run -d -p 443:443 -p 8080:8080  -e API_KEY="your api key" -e LOGIN_PWD="your_login password use fro login control Panel" --name escape-wechat-container hmllsnow/escape-wechat
 ```
 > API_KEY参数配置使用api接口发送消息时的apikey <br>
 LOGIN_PWD参数配置登录配置页面的密码 <br>
+
+## 如何升级：
+### 为什么升级：
+功能还在不停完善，bug也在不停修复，所以升级技巧也是需要的。
+### docker版升级原理：
+删除原docker镜像，拉取新版镜像
+### 升级好处：
+实行新功能
+### 升级坏处：
+原配置都丢了，所以请把你的配置都备份好（目前我能给你的备份方法就是，复制粘贴进写字版，安装好新版后再配置一遍）
+
+### 好了，现在可以告诉你指令了：
+>
+1、强制把容器干掉
+```shell
+docker rm -f escape-wechat-container
+```
+2、删除镜像
+```shell
+docker rmi hmllsnow/escape-wechat
+```
+3、拉取、运行新的容器
+```shell
+docker run -d -p 443:443 -p 8080:8080  -e API_KEY="your api key" -e LOGIN_PWD="your_login password use fro login control Panel" --name escape-wechat-container hmllsnow/escape-wechat
+```
+4、登陆配置页面，重新配置，并登陆机器人
 
 
 
@@ -35,7 +61,7 @@ LOGIN_PWD参数配置登录配置页面的密码 <br>
 ### 一、进入配置页面
 核心功能都在配置页面完成。根据你的安装方法，进入配置页面略有不同<br/>
 #### 1、docker安装
-如果使用docker镜像方式运行，配置页面：<u>[http://localhost](http://localhost)</u> <br/>
+如果使用docker镜像方式运行，配置页面：<u>[http://localhost:8080](http://localhost:8080)</u> <br/>
 #### 2、node直接运行
 不适用docker，且没有修改配置文件，配置页面：<u>[http://localhost:7788](http://localhost:7788)</u> <br/>
 ### 二、配置
@@ -46,7 +72,7 @@ LOGIN_PWD参数配置登录配置页面的密码 <br>
 首先是：启动，停止，重启按钮
 启动：启动微信机器人，如果已经启动，则不会重复启动。
 停止：停止微信机器人，如果已经停止，则不会重复停止。
-重启：重启微信机器人
+重启：重启微信机器人（修改配置后请重启生效）
 
 #### 2、配置面板
 大类分为个人和群，分别对应个人微信消息、群消息的配置
@@ -60,7 +86,7 @@ keyword、regex 兩個條件可以同時存在，但必須同時符合，才会�
 replyOpenAI##{baseurl:"https://api.deepseek.com",apikey:"sk-**************",model:"deepseek-chat" }
 ```
 --说明：1、baseurl：大模型api地址，2、apikey：大模型api key，3、model：大模型模型名称<br/>
-举例使用的deepseek模型（原因：接口格式与openai一致且价格较低）
+举例使用的deepseek模型（原因：接口格式与openai一致且价格较低）<br/>
 <img src="./docs/images/image-6.png" alt="" width="800"/>
 
 ###### 1.2、转发配置
