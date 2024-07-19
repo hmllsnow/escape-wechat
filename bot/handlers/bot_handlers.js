@@ -208,12 +208,17 @@ export async function provideHelp(message) {
 /**
  *  非文本类消息转发处理函数
  */
-export async function nontextForwardHandler(bot, message, handlername) {
+export async function nontextForwardHandler(bot, message, config) {
   configParser(config);
   console.log('这里是nontextForwardHandler方法nontextForwardHandler');
+  /*
   let configname = handlername+"_config";
   const handlersconfig = config.handlersconfig;
   const { targetContacts, targetRooms } = handlersconfig[configname];
+  */
+  const { targetContacts, targetRooms } = config;
+
+
   console.log(`配置读出，targetContacts=${targetContacts},targetRooms${targetRooms}`);
   
   if (Array.isArray(targetContacts) && targetContacts.length > 0) {

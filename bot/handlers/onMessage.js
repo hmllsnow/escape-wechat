@@ -166,7 +166,7 @@ async function handlePersonalNonTextMessage(message, bot, config) {
   for (const rule of nontext) {
     if (matchesRule(message, rule)) {
       console.log('条件满足-》配置config=', rule.handler);
-      await nontextHandler(message, bot, rule.handler);
+      await nontextHandler(message, bot, rule.handler,rule);
       break; // 找到匹配的规则后停止遍历
     }
   }
@@ -266,7 +266,7 @@ async function handleRoomNonTextMessage(message, bot, config) {
     if(await matchesRuleWhilelistandTalkers(message,rule)){
       console.log(`群名和发消息人校验通过，进来了！！！！！！！！！`)
         console.log('config=', rule.handler);
-        await nontextHandler(message, bot, rule.handler);
+        await nontextHandler(message, bot, rule.handler,rule);
         break; // 找到匹配的规则后停止遍历
     }
   }
@@ -366,10 +366,10 @@ async function actionHandler(message, bot, actionString) {
  * @param {Object} bot 
  * @param {String} handlerName 
  */
-async function nontextHandler(message, bot, handlerName) {
+async function nontextHandler(message, bot, handlerName,rule) {
   const action = bot[handlerName];
   if (typeof action === 'function') {
-    await action(bot,message,handlerName);
+    await action(bot,message,rule);
   } else {
     console.error(`Action function ${handlerName} not found or not implemented.`);
   }

@@ -140,15 +140,15 @@
         "nontext": [
             {
                 "whitelist": [
-                    "咱们仨",
-                    "abc测试群"
+                    "咱们仨"
                 ],
                 "talkers": "*",
                 "targetContacts": [
-                    "LL",
-                    "黄焖鸡"
+                    "LL"
                 ],
-                "targetRooms": [],
+                "targetRooms": [
+                    "abc测试群"
+                ],
                 "handler": "nontextForwardHandler"
             }
         ]
