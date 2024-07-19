@@ -15,10 +15,10 @@ escape-wechat是一个微信助手，通过简单的可视化的配置，实现�
 
 **相关视频介绍**
 
-整体介绍：<u>https://www.bilibili.com/video/BV1rChKedEEU/?share_source=copy_web&vd_source=579e78efb0216f2f28668ffcc498291d</u>
-云部署介绍：<u>https://www.bilibili.com/video/BV1yMhWeCEJX/?share_source=copy_web&vd_source=579e78efb0216f2f28668ffcc498291d</u>
-api调用：<u>https://www.bilibili.com/video/BV1PiaYegEuC/?share_source=copy_web&vd_source=579e78efb0216f2f28668ffcc498291d</u>
-对接大模型：<u>https://www.bilibili.com/video/BV1x98JeeEGa/?share_source=copy_web&vd_source=579e78efb0216f2f28668ffcc498291d</u>
+整体介绍：<u>https://www.bilibili.com/video/BV1rChKedEEU/?share_source=copy_web&vd_source=579e78efb0216f2f28668ffcc498291d</u><br>
+云部署介绍：<u>https://www.bilibili.com/video/BV1yMhWeCEJX/?share_source=copy_web&vd_source=579e78efb0216f2f28668ffcc498291d</u><br>
+api调用：<u>https://www.bilibili.com/video/BV1PiaYegEuC/?share_source=copy_web&vd_source=579e78efb0216f2f28668ffcc498291d</u><br>
+对接大模型：<u>https://www.bilibili.com/video/BV1x98JeeEGa/?share_source=copy_web&vd_source=579e78efb0216f2f28668ffcc498291d</u><br>
 <br/>
 
 ## 如何安装：
@@ -34,16 +34,16 @@ docker run -d -p 443:443 -p 8080:8080  -e API_KEY="your api key" -e LOGIN_PWD="y
 LOGIN_PWD参数配置登录配置页面的密码 <br>
 
 ## 如何升级：
-### 为什么升级：
-功能还在不停完善，bug也在不停修复，所以升级技巧也是需要的。
-### docker版升级原理：
-删除原docker镜像，拉取新版镜像
-### 升级好处：
-实行新功能
-### 升级坏处：
-原配置都丢了，所以请把你的配置都备份好（目前我能给你的备份方法就是，复制粘贴进写字版，安装好新版后再配置一遍）
+**为什么升级：**
+功能还在不停完善，bug也在不停修复，所以升级技巧也是需要的。<br>
+**docker版升级原理：**
+删除原docker镜像，拉取新版镜像<br>
+**升级好处：**
+使用新功能<br>
+**升级坏处：**
+原配置都丢了，所以请把你的配置都备份好（目前我能给你的备份方法就是，复制粘贴进写字版，安装好新版后再配置一遍）<br>
 
-### 好了，现在可以告诉你指令了：
+**好了，现在就告诉你指令：**
 >
 1、强制把容器干掉
 ```shell
