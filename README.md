@@ -219,3 +219,9 @@ curl -k -X POST "https://127.0.0.1/api/chat/room" ^
 -d "{\"apiKey\": \"your apikey\", \"roomName\": \"群名\",\"message\": {\"type\": 1, \"content\": \"消息内容\"}}"
 ```
 **加入 `-k` 参数忽略自签名证书，否则会报错。咱们的程序暂时使用的是自签名证书，所以需要忽略。**
+
+## 外部应用
+### COZE插件
+已在COZE插件中实现调用api接口发送消息的功能。<br>
+
+<img src="./docs/images/image-cozeplugin.png" alt="" width="800"/>
