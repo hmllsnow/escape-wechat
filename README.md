@@ -13,8 +13,12 @@ escape-wechat是一个微信助手，通过简单的可视化的配置，实现�
 本项目基于wechaty项目，感谢wechaty项目组提供的开源项目。<br>
 <u>https://github.com/wechaty/wechaty</u>
 
-<iframe src="//player.bilibili.com/player.html?isOutside=true&aid=112716098308200&bvid=BV1rChKedEEU&cid=500001602671511&p=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"></iframe>
+**相关视频介绍**
 
+整体介绍：<u>https://www.bilibili.com/video/BV1rChKedEEU/?share_source=copy_web&vd_source=579e78efb0216f2f28668ffcc498291d</u>
+云部署介绍：<u>https://www.bilibili.com/video/BV1yMhWeCEJX/?share_source=copy_web&vd_source=579e78efb0216f2f28668ffcc498291d</u>
+api调用：<u>https://www.bilibili.com/video/BV1PiaYegEuC/?share_source=copy_web&vd_source=579e78efb0216f2f28668ffcc498291d</u>
+对接大模型：<u>https://www.bilibili.com/video/BV1x98JeeEGa/?share_source=copy_web&vd_source=579e78efb0216f2f28668ffcc498291d</u>
 <br/>
 
 ## 如何安装：
