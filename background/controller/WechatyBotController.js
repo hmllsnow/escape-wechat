@@ -28,7 +28,7 @@ class WechatyBotController {
    * 启动微信机器人进程
    * @returns {Promise} 一个包含进程ID的对象
    */
-startBot() {
+  startBot() {
     return new Promise((resolve, reject) => {
       this.logger.log("进程拿到的path:",this.botPath)
       const startCommand = `node "${path.join(this.botPath, './demo.js')}"`; 

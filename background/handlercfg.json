@@ -3,12 +3,13 @@
         "reply": [
             {
                 "whitelist": [
-                    "LL"
+                    "LL",
+                    "老黄"
                 ],
                 "keywords": [
                     "ding"
                 ],
-                "handler": "greet"
+                "handler": "greet##{\ntemplate:\"hello {{#MSGROOM}}[{{MSGROOM}}]{{/MSGROOM}}[{{MSGTALKER}}],{{PARAMS.info}}\",\ninfo:\"欢迎使用escape-wechat\"\n}"
             },
             {
                 "whitelist": [
@@ -28,7 +29,7 @@
                 "keywords": [
                     "问"
                 ],
-                "handler": "replyOpenAI##\n{\nbaseurl:\"https://api.deepseek.com\",\napikey:\"sk-******************\",\nmodel:\"deepseek-chat\"\n}"
+                "handler": "reqOpenaiTextChat##\n{\nbaseurl:\"https://api.deepseek.com\",\napikey:\"sk-ac2a5d258cb84fdba7b7e60e63eea6b9\",\nmodel:\"deepseek-chat\",\ntemplate:\"{{REPLYCONTENT}}\\n 来自模型：{{PARAMS.model}}\"\n}"
             }
         ],
         "forward": [
@@ -44,17 +45,10 @@
                 "targetRooms": [
                     "咱们仨"
                 ],
-                "handler": ""
+                "handler": "forwardTextDefault##\n{\ntemplate:\"{{MSGTALKER}}说:\\n{{FORWARDMSG}}\"\n}"
             }
         ],
         "actions": [
-            {
-                "whitelist": [
-                    "LL"
-                ],
-                "regex": "^#动作名",
-                "handler": "actionHandler"
-            },
             {
                 "mentionMe": false,
                 "mentionAll": false,
@@ -64,11 +58,27 @@
                 "keywords": [
                     "给"
                 ],
-                "handler": "actionCozeTextChat##\n{\napikey:\"pat_***************\", bot_id:\"123456789123456789\", user_id:\"***\" }"
+                "handler": "reqCozeTextChat##\n{\napikey:\"pat_***************\", bot_id:\"123456789123456789\", user_id:\"***\" }"
             }
         ],
         "nontext": [
             {
+                "whitelist": [
+                    "LL",
+                    "老黄"
+                ],
+                "targetContacts": [
+                    "黄焖鸡"
+                ],
+                "targetRooms": [
+                    "咱们仨"
+                ],
+                "handler": "forwardNontext##\n{\ntemplate:\"转发{{#MSGROOM}}[{{MSGROOM}}]群{{/MSGROOM}}[{{MSGTALKER}}]发的{{MSGTYPE}}\",\nhandleType:{\nvideo:true,\nimage:true,\nfile:false,\nother:true\n}}"
+            },
+            {
+                "mentionMe": false,
+                "mentionAll": false,
+                "handler": "forwardNontextDefault",
                 "whitelist": [
                     "LL"
                 ],
@@ -77,8 +87,7 @@
                 ],
                 "targetRooms": [
                     "咱们仨"
-                ],
-                "handler": "nontextForwardHandler"
+                ]
             }
         ]
     },
@@ -91,24 +100,11 @@
                 ],
                 "talkers": "*",
                 "keywords": [
-                    "keyword"
-                ],
-                "mentionMe": true,
-                "mentionAll": false,
-                "handler": "replyMeeting"
-            },
-            {
-                "whitelist": [
-                    "abc测试群",
-                    "咱们仨"
-                ],
-                "talkers": "*",
-                "keywords": [
                     "+-*/"
                 ],
                 "mentionMe": true,
                 "mentionAll": false,
-                "handler": "replyOpenAI##\n{\n\"baseurl\":\"http://127.0.0.1:23333/v1\",\n\"apikey\":\"\",\n\"model\":\"internlm2\" \n}"
+                "handler": "reqOpenaiTextChat##\n{\n\"baseurl\":\"http://127.0.0.1:23333/v1\",\n\"apikey\":\"\",\n\"model\":\"internlm2\" \n}"
             }
         ],
         "forward": [
@@ -122,19 +118,14 @@
                 "keywords": "*",
                 "mentionMe": false,
                 "mentionAll": false,
-                "handler": ""
+                "handler": "forwardTextDefault##\n{\ntemplate:\"{{#MSGROOM}}[{{MSGROOM}}]群{{/MSGROOM}}[{{MSGTALKER}}]说:\\n{{FORWARDMSG}}\"\n}"
             }
         ],
         "actions": [
             {
                 "whitelist": "*",
-                "regex": "^#你好",
-                "handler": "actionHandler"
-            },
-            {
-                "whitelist": "*",
                 "regex": "^#群成员",
-                "handler": "actionRoomMembers"
+                "handler": "sayRoomMembers"
             }
         ],
         "nontext": [
@@ -149,7 +140,7 @@
                 "targetRooms": [
                     "abc测试群"
                 ],
-                "handler": "nontextForwardHandler"
+                "handler": "forwardNontextDefault"
             }
         ]
     },

@@ -24,18 +24,30 @@ const config = {
     king:'LL',
     personal: {
       reply: [
-        { whitelist: 'LL', keywords: ['ding'] , handler: 'greet' },//也支持regax，关键字和keywords互斥
+        { whitelist: 'LL', keywords: ['ding'] , handler: 'greet##{greetContent:\"收到！\"}' },//也支持regax，关键字和keywords互斥
        // { whitelist: ['LL'], keywords: '*', handler: 'greet' },//也支持regax，关键字和keywords互斥,关键字配置成*，他就可以处理任意类型
         // 更多个人消息回复规则...
         { whitelist: ['黄焖鸡'], keywords: ['你好'], handler: 'greet' },//也支持regax，关键字和keywords互斥
       ],
       forward: [
-        { whitelist: '*', keywords: ['forward'], targetContacts: ['LL','黄焖鸡'], targetRooms: ['咱们仨'], handler: '' },
-        { whitelist: '小鹏汽车-詹', keywords: '*', targetContacts: ['LL'], targetRooms: [], handler: '' },
+        { whitelist: '*', keywords: ['forward'], targetContacts: ['LL'], targetRooms: ['咱们仨'], handler: 'forwardTextDefault' },
+        { whitelist: '小鹏汽车-詹', keywords: '*', targetContacts: ['LL'], targetRooms: [], handler: 'forwardTextDefault' },
         // 更多个人消息转发规则...
       ],
       actions: [
-        { whitelist: '*',regex: /^#操你/, action: 'actionHandler' },
+        {
+          whitelist: [
+              "LL"
+          ],
+          regex: "^#动作名",
+          handler: "actionHandler"
+      },
+      {
+        whitelist: "*",
+        regex: "^#群成员",
+        handler: "sayRoomMember"
+    },
+        { whitelist: '*',regex: /^#群成员/, handler: 'sayRoomMember' },
         // 更多个人消息动作规则...
       ],
       nontext:[
@@ -53,10 +65,10 @@ const config = {
         // 更多群消息转发规则...⚽️ 聚义厅
       ],
       actions: [
-        { whitelist: '*',regex: /^#操你/, action: 'actionHandler' },
-        { whitelist: '*',regex: /^#群成员/, action: 'actionRoomMembers' },
-        { whitelist: '*',regex: /^#提醒群成员/, action: 'actionAtRoomMembers' },
-        { whitelist: '*',regex: /^#退群/, action: 'actionQuitRoom' },
+        { whitelist: '*',regex: /^#操你/, handler: 'actionHandler' },
+        { whitelist: '*',regex: /^#群成员/, handler: 'sayRoomMembers' },
+        { whitelist: '*',regex: /^#提醒群成员/, handler: 'sayRoomMember' },
+        { whitelist: '*',regex: /^#退群/, handler: 'actionQuitRoom' },
         // 更多群消息动作规则...
       ],
       nontext:[

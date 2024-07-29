@@ -96,10 +96,8 @@ export function parseActionNameString(input) {
   // 如果没有参数字符串，直接返回操作处理器名称和空对象
   // 如果没有参数部分，返回动作处理器名称和空对象
   if (!paramsString) {
-    console.log("parseActionNameString no paramsString:"+actionHandler)
     return [actionHandler, {}];
   }
-  console.log("parseActionNameString paramsString:"+paramsString)
   try {
     // 尝试将参数字符串解析为JSON对象，替换冒号前的单词为JSON字符串的关键字
     // 这是为了处理JSON解析要求关键字必须用引号括起来的问题
@@ -109,16 +107,43 @@ export function parseActionNameString(input) {
     } catch (e) {
       // 如果直接解析失败，尝试修复格式
       const fixedString = paramsString.replace(/(\s*?{\s*?|\s*?,\s*?)(['"])?([a-zA-Z0-9_]+)(['"])?:/g, '$1"$3":');
-
-      console.log("Fixed string:", fixedString);
       paramsObject = JSON.parse(fixedString);
     }
     return [actionHandler, paramsObject];
   } catch (error) {
     // 如果解析失败，打印错误信息，并返回操作处理器名称和空对象
-    console.error("Error parsing parameters:", error);
+    console.log("Error:Utils.parseActionNameString:", error);
     // 如果解析失败，返回动作处理器名称和空对象
     return [actionHandler, {}];
   }
 }
-  export default removeMentions
+/**
+ * 返回消息房间名和发送人，如果没有房间名，则不包含room节点
+ * @param {message} message 
+ * @returns 
+ */
+export async function getTalkerAndRoom(message) {
+  const talker = await message.talker()
+  const room = await message.room();
+  const talkerName =await talker.alias()||talker.name();
+  let data  = {MSGTALKER:talkerName}
+  if (room){
+    room = await room.topic();
+    data.MSGROOM = room;
+  }
+  return data
+}
+
+export function convertKeysToUpperCase(obj) {
+  if (typeof obj !== 'object' || obj === null) {
+    return obj;
+  }
+
+  const newObj = {};
+  Object.keys(obj).forEach(key => {
+    const upperCaseKey = key.toUpperCase();
+    newObj[upperCaseKey] = obj[key];
+  });
+  return newObj;
+}
+export default removeMentions

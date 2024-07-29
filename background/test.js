@@ -15,3 +15,8 @@ let method={
 c[Symbol('a')]=3
 
 console.log(c[Symbol('a')])
+
+const path = require('path');
+const handlersDir = path.join(__dirname, './handlers');
+console.log(handlersDir)
+

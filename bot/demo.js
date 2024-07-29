@@ -2,9 +2,9 @@
 import qrcodeTerminal from 'qrcode-terminal'; 
 import { log } from 'wechaty'
 import { config } from './config.js'
-import { onMessage } from './handlers/onMessage.js'
-import { registerHandlers } from './handlers/bot_handlers.js';
-import * as handlers from './handlers/bot_handlers.js'; // 导入所有处理函数
+import { onMessage } from './handlersNew/onMessage.js'
+import { registerHandlers } from './handlersNew/bot_handlers.js';
+import * as handlers from './handlersNew/bot_handlers.js'; // 导入所有处理函数
 import fs  from 'fs';
 import path from 'path';
 import axios from 'axios';
@@ -232,9 +232,8 @@ async function main (){
      //puppet: 'wechaty-puppet-wechat',
     });
     log.level('verbose');
-      // 注册处理函数到 bot 实例
-    await registerHandlers(bot, handlers);
-    //bot.greet = greet;
+    // 注册处理函数到 bot 实例
+    await registerHandlers(bot);
 
     bot
       .on('scan', (qrcode, status) => {
