@@ -25,7 +25,13 @@ api调用：<u>https://www.bilibili.com/video/BV1PiaYegEuC/?share_source=copy_we
 一、使用docker安装
 docker安装是最简单，最快捷的方案
 1. 拉取镜像
+```shell
 docker pull hmllsnow/escape-wechat
+```
+如果你的网络环境访问不到dockerhub，可以使用华为云镜像仓库拉取
+```shell
+docker pull swr.cn-north-4.myhuaweicloud.com/hmllsnow/escape-wechat:latest
+```
 2. 运行容器
 ```shell
 docker run -d -p 443:443 -p 8080:8080  -e API_KEY="your api key" -e LOGIN_PWD="your_login password use fro login control Panel" --name escape-wechat-container hmllsnow/escape-wechat
@@ -92,12 +98,14 @@ docker run -d -p 443:443 -p 8080:8080  -e API_KEY="your api key" -e LOGIN_PWD="y
 大类分为个人和群，分别对应个人微信消息、群消息的配置
 ##### 1、个人消息
 ###### 1.1、回复配置
-收到白名单（*表示任何人）用户发送的文本消息，如何文本消息包含Keyword关键字（或文本消息符合Regex配置的正则表达）则执行Handler配置的回复函数。默认已经开发了greet函数，会回复dang
-keyword、regex 兩個條件可以同時存在，但必須同時符合，才会触发，所以這樣做意義不大，所以建議這兩個條件互斥存在。<br/>
-**bug** 白名单配置联系人的时候，应该配置其昵称，但目前wechaty的免费puppet存在bug，有时会将你配置的备注名识别为联系人的昵称，所以如果联系人配置有备注名，建议白名单将其昵称和备注名都配置进去。
-**回复函数实现了调用函数传参的功能，函数名和参数之间通过\#\#分隔，参数使用json格式**<br/>
+收到白名单（*表示任何人）用户发送的文本消息，如何文本消息包含Keyword关键字（或文本消息符合Regex配置的正则表达）则执行Handler配置的回复函数。默认已经开发了greet函数，具体使用方法见下文的举例。<br>
+注意：keyword、regex 兩個條件可以同時存在，但必須同時符合，才会触发，所以這樣做意義不大，所以建議這兩個條件互斥存在。<br/>
+**bug** <br/>
+白名单配置联系人的时候，应该配置其昵称，但目前wechaty的免费puppet存在bug，有时会将你配置的备注名识别为联系人的昵称，所以如果联系人配置有备注名，建议白名单将其昵称和备注名都配置进去。<br>
+
 **举例：**<br/>
 ***greet***<br/>
+**greet回复函数实现了调用函数传参的功能，函数名和参数之间通过\#\#分隔，参数使用json格式**<br/>
 greet函数参数：
 template：回复模板。定义函数收到消息后的回复消息的模板。
 模板{{参数名}}的方式，置入变量。构建temmplate时，我们内置的变量名有：<br/>
@@ -109,7 +117,7 @@ greet##{
 template:"hello {{#MSGROOM}}[{{MSGROOM}}]{{/MSGROOM}}[{{MSGTALKER}}],{{PARAMS.info}}",
 info:"欢迎使用escape-wechat"
 }
-#收到后的回复内容：hello [群聊][小明],欢迎使用escape-wechat
+#收到后的回复内容：hello [群聊（如发自群）][小明],欢迎使用escape-wechat
 ```
 
 
