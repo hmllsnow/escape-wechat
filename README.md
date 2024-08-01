@@ -22,7 +22,7 @@ api调用：<u>https://www.bilibili.com/video/BV1PiaYegEuC/?share_source=copy_we
 <br/>
 
 ## 如何安装：
-一、使用docker安装
+一、使用docker安装<br>
 docker安装是最简单，最快捷的方案
 1. 拉取镜像
 ```shell
@@ -38,6 +38,48 @@ docker run -d -p 443:443 -p 8080:8080  -e API_KEY="your api key" -e LOGIN_PWD="y
 ```
 > API_KEY参数配置使用api接口发送消息时的apikey <br>
 LOGIN_PWD参数配置登录配置页面的密码 <br>
+
+二、node直接运行
+如果您是开发者，可以使用nodejs直接运行。不建议普通用户使用nodejs直接运行本项目，你要解决的问题远多于docker启动：nodejs安装，git安装，git访问github，node依赖的安装，等等。但是如果你做好准备了，那就开始吧。安装好后，你甚至可以尝试自己开发一些处理函数来处理消息。很简单且很有趣。
+1. 安装nodejs<br/>
+<u>https://nodejs.org/zh-cn/download/prebuilt-installer</u><br/>
+<u>https://nodejs.cn/download/</u><br/>
+检查是否成功安装了nodejs和npm
+```shell
+node -v
+```
+```shell
+npm -v
+```
+2. 安装git<br/>
+<u>https://git-scm.com/downloads</u><br/>
+检查git是否安装成功
+```shell
+git -v
+```
+3. 使用git克隆本项目
+在你希望存放本项目的目录下，执行以下命令克隆本项目
+```shell
+git clone https://github.com/hmllsnow/escape-wechat.git
+```
+4. 安装依赖
+进入escape-wechat目录下，进入background，bot，frontground目录下执行以下命令安装依赖
+```shell
+npm install
+```
+
+5. 运行
+进入escape-wechat目录下，进入background
+```shell
+node index.js
+```
+进入escape-wechat目录下，进入frontground目录
+```shell
+npm start
+```
+6. 访问控制面板
+<u>http://localhost:7788</u>
+
 
 ## 如何升级：
 **为什么升级：**
@@ -64,6 +106,7 @@ docker rmi hmllsnow/escape-wechat
 docker run -d -p 443:443 -p 8080:8080  -e API_KEY="your api key" -e LOGIN_PWD="your_login password use fro login control Panel" --name escape-wechat-container hmllsnow/escape-wechat
 ```
 4、登陆配置页面，重新配置，并登陆机器人
+
 
 
 
