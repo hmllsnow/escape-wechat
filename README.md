@@ -39,7 +39,7 @@ docker run -d -p 443:443 -p 8080:8080  -e API_KEY="your api key" -e LOGIN_PWD="y
 > API_KEY参数配置使用api接口发送消息时的apikey <br>
 LOGIN_PWD参数配置登录配置页面的密码 <br>
 
-二、node直接运行
+二、node直接运行<br>
 如果您是开发者，可以使用nodejs直接运行。不建议普通用户使用nodejs直接运行本项目，你要解决的问题远多于docker启动：nodejs安装，git安装，git访问github，node依赖的安装，等等。但是如果你做好准备了，那就开始吧。安装好后，你甚至可以尝试自己开发一些处理函数来处理消息。很简单且很有趣。
 1. 安装nodejs<br/>
 <u>https://nodejs.org/zh-cn/download/prebuilt-installer</u><br/>
@@ -67,6 +67,15 @@ git clone https://github.com/hmllsnow/escape-wechat.git
 ```shell
 npm install
 ```
+npm install可能出现安装失败，建议使用cnpm安装，cnpm安装速度更快。（下面的代码如果不成功，就上网查一下）
+安装cnpm
+```shell
+npm install -g cnpm --registry=https://registry.npm.taobao.org
+#再执行cnpm安装依赖
+cnpm install
+```
+
+
 
 5. 运行
 进入escape-wechat目录下，进入background
