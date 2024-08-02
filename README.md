@@ -19,6 +19,7 @@ escape-wechat是一个微信助手，通过简单的可视化的配置，实现�
 云部署介绍：<u>https://www.bilibili.com/video/BV1yMhWeCEJX/?share_source=copy_web&vd_source=579e78efb0216f2f28668ffcc498291d</u><br>
 api调用：<u>https://www.bilibili.com/video/BV1PiaYegEuC/?share_source=copy_web&vd_source=579e78efb0216f2f28668ffcc498291d</u><br>
 对接大模型：<u>https://www.bilibili.com/video/BV1x98JeeEGa/?share_source=copy_web&vd_source=579e78efb0216f2f28668ffcc498291d</u><br>
+node直接运行及二开：<u>https://www.bilibili.com/video/BV1agigeYEHP/?share_source=copy_web&vd_source=579e78efb0216f2f28668ffcc498291d</u><br>
 <br/>
 
 ## 如何安装：
